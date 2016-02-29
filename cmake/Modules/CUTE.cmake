@@ -52,11 +52,13 @@ function(cute_test TEST_NAME)
   if(TARGET ${TEST_TARGET_NAME})
     target_link_libraries(${TEST_TARGET_NAME} ${LIBS})
     add_test(NAME ${TEST_TARGET_NAME} WORKING_DIRECTORY ${CUTE_TEST_REPORTS_DIRECTORY} COMMAND ${TEST_TARGET_NAME})
-    add_custom_target(cute_${TEST_TARGET_NAME} ALL
-                      COMMAND ctest -R ${TEST_TARGET_NAME} -Q --output-on-failure
-                      DEPENDS ${TEST_TARGET_NAME}
-                      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                      COMMENT "Running CUTE test ${TEST_NAME} ..."
-                      VERBATIM)
+    if(NOT CUTE_SKIP_RUN_UNIT_TESTS)
+      add_custom_target(cute_${TEST_TARGET_NAME} ALL
+                        COMMAND ctest -R ${TEST_TARGET_NAME} -Q --output-on-failure
+                        DEPENDS ${TEST_TARGET_NAME}
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                        COMMENT "Running CUTE test ${TEST_NAME} ..."
+                        VERBATIM)
+    endif(NOT CUTE_SKIP_RUN_UNIT_TESTS)
   endif()
 endfunction()

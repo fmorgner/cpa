@@ -5,6 +5,10 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
+if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/products/${CMAKE_BUILD_TYPE}/bin")
+endif(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
 set(CMAKE_CXX_FLAGS "-std=c++14 -pedantic -Wall -Wextra -Werror")
@@ -17,6 +21,11 @@ endif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
 option(CPA_BUILD_UNIT_TESTS "Build CPA unit tests" ON)
 if(CPA_BUILD_UNIT_TESTS)
+  option(CPA_SKIP_RUN_UNIT_TESTS "Skip running each unit test after its built" OFF)
+  if(CPA_SKIP_RUN_UNIT_TESTS)
+    set(CUTE_SKIP_RUN_UNIT_TESTS ON)
+  endif(CPA_SKIP_RUN_UNIT_TESTS)
+
   include(CUTE)
   include_directories(SYSTEM "third_party/cute/include")
   include_directories(SYSTEM "include")

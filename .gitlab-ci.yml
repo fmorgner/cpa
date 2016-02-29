@@ -1,7 +1,7 @@
 spec:x86_64:
   script:
     - cd build
-    - CXX=clang++ cmake ..
+    - CXX=clang++ cmake .. -DCPA_SKIP_RUN_UNIT_TESTS=On
     - make -j$(nproc)
     - ctest --output-on-failure
   tags:
@@ -12,12 +12,11 @@ spec:x86_64:
     paths:
       - build/products
       - build/cute-reports
-      - doc
 
 spec:arm:
   script:
     - cd build
-    - CXX=clang++ cmake ..
+    - CXX=clang++ cmake .. -DCPA_SKIP_RUN_UNIT_TESTS=On
     - make -j$(nproc)
     - ctest --output-on-failure
   tags:
@@ -28,4 +27,3 @@ spec:arm:
     paths:
       - build/products
       - build/cute-reports
-      - doc
