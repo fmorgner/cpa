@@ -225,6 +225,14 @@ namespace cpa
       return m_denominator;
       }
 
+    constexpr basic_rational operator + (basic_rational const & other) const
+      {
+      auto const & lhs = this->common(other);
+      auto const & rhs = other.common(*this);
+
+      return basic_rational{lhs.m_numerator + rhs.m_numerator, lhs.m_denominator};
+      }
+
     private:
       rep m_numerator;
       rep m_denominator;

@@ -1,0 +1,31 @@
+spec:x86_64:
+  script:
+    - cd build
+    - CXX=clang++ cmake ..
+    - make -j$(nproc)
+    - ctest --output-on-failure
+  tags:
+    - x86_64
+    - cxx14
+    - clang
+  artifacts:
+    paths:
+      - build/products
+      - build/cute-reports
+      - doc
+
+spec:arm:
+  script:
+    - cd build
+    - CXX=clang++ cmake ..
+    - make -j$(nproc)
+    - ctest --output-on-failure
+  tags:
+    - arm
+    - cxx14
+    - clang
+  artifacts:
+    paths:
+      - build/products
+      - build/cute-reports
+      - doc
