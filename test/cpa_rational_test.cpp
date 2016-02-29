@@ -39,7 +39,7 @@ void test_instantiation_with_zero_denominator()
   ASSERT_THROWS(cpa::rational(1, 0), std::domain_error);
   }
 
-void test_reduced_with_non_reducible_positive_rational()
+void test_reduce_with_non_reducible_positive_rational()
   {
   auto constexpr r1 = cpa::rational{5, 13};
   auto constexpr r2 = r1.reduce();
@@ -48,7 +48,7 @@ void test_reduced_with_non_reducible_positive_rational()
   ASSERT_EQUAL(13, r2.denominator());
   }
 
-void test_reduced_with_reducible_positive_rational()
+void test_reduce_with_reducible_positive_rational()
   {
   auto constexpr r1 = cpa::rational{6, 14};
   auto constexpr r2 = r1.reduce();
@@ -57,7 +57,7 @@ void test_reduced_with_reducible_positive_rational()
   ASSERT_EQUAL(7, r2.denominator());
   }
 
-void test_reduced_with_non_reducible_negative_numerator_rational()
+void test_reduce_with_non_reducible_negative_numerator_rational()
   {
   auto constexpr r1 = cpa::rational{-5, 13};
   auto constexpr r2 = r1.reduce();
@@ -66,7 +66,7 @@ void test_reduced_with_non_reducible_negative_numerator_rational()
   ASSERT_EQUAL(13, r2.denominator());
   }
 
-void test_reduced_with_reducible_negative_numerator_rational()
+void test_reduce_with_reducible_negative_numerator_rational()
   {
   auto constexpr r1 = cpa::rational{-6, 14};
   auto constexpr r2 = r1.reduce();
@@ -75,7 +75,7 @@ void test_reduced_with_reducible_negative_numerator_rational()
   ASSERT_EQUAL( 7, r2.denominator());
   }
 
-void test_reduced_with_non_reducible_negative_denominator_rational()
+void test_reduce_with_non_reducible_negative_denominator_rational()
   {
   auto constexpr r1 = cpa::rational{7, -15};
   auto constexpr r2 = r1.reduce();
@@ -84,7 +84,7 @@ void test_reduced_with_non_reducible_negative_denominator_rational()
   ASSERT_EQUAL(-15, r2.denominator());
   }
 
-void test_reduced_with_reducible_negative_denominator_rational()
+void test_reduce_with_reducible_negative_denominator_rational()
   {
   auto constexpr r1 = cpa::rational{12, -8};
   auto constexpr r2 = r1.reduce();
@@ -177,26 +177,45 @@ int main(int argc, char * argv[])
   {
   auto suite = cute::suite{};
 
-  suite += CUTE(test_instantiation_with_single_integral);
-  suite += CUTE(test_instantiation_with_two_integrals);
-  suite += CUTE(test_instantiation_with_zero_denominator);
+  using T = cute::test;
 
-  suite += CUTE(test_reduced_with_non_reducible_positive_rational);
-  suite += CUTE(test_reduced_with_reducible_positive_rational);
-  suite += CUTE(test_reduced_with_non_reducible_negative_numerator_rational);
-  suite += CUTE(test_reduced_with_reducible_negative_numerator_rational);
-  suite += CUTE(test_reduced_with_non_reducible_negative_denominator_rational);
-  suite += CUTE(test_reduced_with_reducible_negative_denominator_rational);
+  suite += T{"Instantiation with a single IntegralValue",
+             test_instantiation_with_single_integral};
+  suite += T{"Instantiation with two IntegralValues",
+             test_instantiation_with_two_integrals};
+  suite += T{"Instantiation with zero as the denominator",
+             test_instantiation_with_zero_denominator};
 
-  suite += CUTE(test_addition_positive_positive_with_same_type_and_denominator);
-  suite += CUTE(test_addition_positive_negative_with_same_type_and_denominator);
-  suite += CUTE(test_addition_negative_positive_with_same_type_and_denominator);
-  suite += CUTE(test_addition_negative_negative_with_same_type_and_denominator);
+  suite += T{"Reduce a non-reducible positive rational",
+             test_reduce_with_non_reducible_positive_rational};
+  suite += T{"Reduce a positive rational",
+             test_reduce_with_reducible_positive_rational};
+  suite += T{"Reduce a non-reducible rational with a negative numerator",
+             test_reduce_with_non_reducible_negative_numerator_rational};
+  suite += T{"Reduce a rational with a negative numerator",
+             test_reduce_with_reducible_negative_numerator_rational};
+  suite += T{"Reduce a non-reducible rational with a negative denominator",
+             test_reduce_with_non_reducible_negative_denominator_rational};
+  suite += T{"Reduce a rational with a negative numerator with a negative denominator",
+             test_reduce_with_reducible_negative_denominator_rational};
 
-  suite += CUTE(test_addition_positive_positive_with_same_type_and_different_denominator);
-  suite += CUTE(test_addition_positive_negative_with_same_type_and_different_denominator);
-  suite += CUTE(test_addition_negative_positive_with_same_type_and_different_denominator);
-  suite += CUTE(test_addition_negative_negative_with_same_type_and_different_denominator);
+  suite += T{"Add two positive rationals with the same representation and denominator",
+              test_addition_positive_positive_with_same_type_and_denominator};
+  suite += T{"Add a positive and a negative rational with the same representation and denominator",
+             test_addition_positive_negative_with_same_type_and_denominator};
+  suite += T{"Add a negative and a positive rational with the same representation and denominator",
+             test_addition_negative_positive_with_same_type_and_denominator};
+  suite += T{"Add two negative rationals with the same representation and denominator",
+             test_addition_negative_negative_with_same_type_and_denominator};
+
+  suite += T{"Add two posisitive rationals with the same representation but different denominators",
+             test_addition_positive_positive_with_same_type_and_different_denominator};
+  suite += T{"Add a positive and a negative rational with the same representation but different denominators",
+             test_addition_positive_negative_with_same_type_and_different_denominator};
+  suite += T{"Add a negative and a positive rational with the same representation but different denominators",
+             test_addition_negative_positive_with_same_type_and_different_denominator};
+  suite += T{"Add two negative rationals with the same representation but different denominators",
+             test_addition_negative_negative_with_same_type_and_different_denominator};
 
   auto file = cute::xml_file_opener{argc, argv};
   auto listener = cute::xml_listener<cute::ide_listener<>>{file.out};

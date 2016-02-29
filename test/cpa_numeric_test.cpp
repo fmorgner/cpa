@@ -92,25 +92,43 @@ int main(int argc, char * argv[])
   {
   auto suite = cute::suite{};
 
-  suite += CUTE(test_abs_with_positive_int);
-  suite += CUTE(test_abs_with_negative_int);
-  suite += CUTE(test_abs_with_positive_float);
-  suite += CUTE(test_abs_with_negative_float);
+  using T = cute::test;
 
-  suite += CUTE(test_gcd_with_positive_positive_prime_ints);
-  suite += CUTE(test_gcd_with_negative_positive_prime_ints);
-  suite += CUTE(test_gcd_with_positive_negative_prime_ints);
-  suite += CUTE(test_gcd_with_negative_negative_prime_ints);
+  suite += T{"Take the absolute value of a positive int",
+             test_abs_with_positive_int};
+  suite += T{"Take the absolute value of a negative int",
+             test_abs_with_negative_int};
+  suite += T{"Take the absolute value of a positive float",
+             test_abs_with_positive_float};
+  suite += T{"Take the absolute value of a negative float",
+             test_abs_with_negative_float};
 
-  suite += CUTE(test_gcd_with_positive_positive_nonprime_ints);
-  suite += CUTE(test_gcd_with_negative_positive_nonprime_ints);
-  suite += CUTE(test_gcd_with_positive_negative_nonprime_ints);
-  suite += CUTE(test_gcd_with_negative_negative_nonprime_ints);
+  suite += T{"Calculate the Greatest Common Divisor of two positive and prime ints",
+             test_gcd_with_positive_positive_prime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a negative and a positive int",
+             test_gcd_with_negative_positive_prime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a positive and a negative int",
+             test_gcd_with_positive_negative_prime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of two negative ints",
+             test_gcd_with_negative_negative_prime_ints};
 
-  suite += CUTE(test_gcd_with_positive_positive_mixed_ints);
-  suite += CUTE(test_gcd_with_negative_positive_mixed_ints);
-  suite += CUTE(test_gcd_with_positive_negative_mixed_ints);
-  suite += CUTE(test_gcd_with_negative_negative_mixed_ints);
+  suite += T{"Calculate the Greatest Common Divisor of two positive and non-prime ints",
+             test_gcd_with_positive_positive_nonprime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a negative and a positive and non-prime int",
+             test_gcd_with_negative_positive_nonprime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a positive and a negative and non-prime int",
+             test_gcd_with_positive_negative_nonprime_ints};
+  suite += T{"Calculate the Greatest Common Divisor of two negative and non-prime ints",
+             test_gcd_with_negative_negative_nonprime_ints};
+
+  suite += T{"Calculate the Greatest Common Divisor of two positive mixed ints",
+             test_gcd_with_positive_positive_mixed_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a negative and a positive mixed int",
+             test_gcd_with_negative_positive_mixed_ints};
+  suite += T{"Calculate the Greatest Common Divisor of a positive and a negative mixed int",
+             test_gcd_with_positive_negative_mixed_ints};
+  suite += T{"Calculate the Greatest Common Divisor of two negative mixed ints",
+             test_gcd_with_negative_negative_mixed_ints};
 
   auto file = cute::xml_file_opener{argc, argv};
   auto listener = cute::xml_listener<cute::ide_listener<>>{file.out};
