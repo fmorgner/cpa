@@ -203,6 +203,6 @@ int main(int argc, char * argv[])
 
   auto runner = cute::makeRunner(listener, argc, argv);
 
-  return !runner(suite);
+  return !runner(suite, "CPA::rational::basic_rational");
   }
 
