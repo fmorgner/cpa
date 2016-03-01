@@ -140,6 +140,7 @@ namespace cpa
      * Create an object of type cpa::basic_rational representing an expansion to the common denominator of the current object
      * and \p other
      */
+    template<typename OtherRep>
     constexpr basic_rational common(basic_rational const & other) const
       {
       auto const factor = cpa::lcm(m_denominator, other.m_denominator) / m_denominator;
@@ -225,13 +226,6 @@ namespace cpa
       return m_denominator;
       }
 
-    constexpr basic_rational operator + (basic_rational const & other) const
-      {
-      auto const & lhs = this->common(other);
-      auto const & rhs = other.common(*this);
-
-      return basic_rational{lhs.m_numerator + rhs.m_numerator, lhs.m_denominator};
-      }
 
     private:
       rep m_numerator;
@@ -249,6 +243,21 @@ namespace cpa
     {
     using target_type = basic_rational<std::common_type_t<LeftRep, RightRep>>;
     return target_type{cpa::gcd(lhs.numerator(), rhs.numerator()), cpa::lcm(lhs.denominator(), rhs.denominator())};
+    }
+
+  /**
+   * Add two cpa::basic_rational objects
+   *
+   * \note
+   * No simplifications will be applied to the result.
+   */
+  template<typename Rep>
+  constexpr auto operator + (basic_rational<Rep> const & lhs, basic_rational<Rep> const & rhs)
+    {
+    auto const & cl = lhs.common(rhs);
+    auto const & cr = rhs.common(lhs);
+
+    return basic_rational<Rep>{cl.numerator() + cr.numerator(), cl.denominator()};
     }
 
   /*
