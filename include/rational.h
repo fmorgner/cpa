@@ -140,7 +140,6 @@ namespace cpa
      * Create an object of type cpa::basic_rational representing an expansion to the common denominator of the current object
      * and \p other
      */
-    template<typename OtherRep>
     constexpr basic_rational common(basic_rational const & other) const
       {
       auto const factor = cpa::lcm(m_denominator, other.m_denominator) / m_denominator;
